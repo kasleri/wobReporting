@@ -1,8 +1,8 @@
 package com.wobReporting.server.repository;
 
 import com.wobReporting.server.model.Listing;
-import com.wobReporting.server.repository.helper.predicatesCollection.SearchCriteria;
 import com.wobReporting.server.repository.helper.predicatesCollection.ListingSearchCriteria;
+import com.wobReporting.server.repository.helper.predicatesCollection.SearchCriteria;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

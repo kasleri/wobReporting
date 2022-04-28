@@ -1,4 +1,3 @@
-
 package com.wobReporting.server.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;

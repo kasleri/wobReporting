@@ -60,4 +60,24 @@ public class ListingService {
     public List<Listing> findByPredicates(List<SearchCriteria> params) {
         return listingRepository.findByPredicates(params);
     }
+
+    public String getTotalBestLister() {
+        return listingRepository.getTotalBestLister();
+    }
+
+    public List<MonthlyIBaseStatistics> getMonthlyStatistics() {
+        return listingRepository.getMonthlyStatistics();
+    }
+
+    public List<IBaseStatistics> getTotalStatistics() {
+        return listingRepository.getTotalStatistics();
+    }
+
+    public List<Listing> findAll() {
+        return listingRepository.findAll();
+    }
+
+    public List<IBestLister> getMonthlyBestLister() {
+        return listingRepository.getMonthlyBestLister();
+    }
 }
