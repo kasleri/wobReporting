@@ -9,10 +9,10 @@ import java.util.List;
 public class ReporterDTO {
     private int totalCount;
     private String bestLister;
-    private AbstractIMarketplaceReports totalEbayStatistics;
-    private AbstractIMarketplaceReports totalAmazonStatistics;
-    private List<? extends AbstractIMarketplaceReports> monthlyEbayStatistics;
-    private List<? extends AbstractIMarketplaceReports> monthlyAmazonStatistics;
+    //private AbstractIMarketplaceReports totalEbayStatistics;
+    private List<? extends AbstractIMarketplaceReports> totalMarketplaceStatistics;
+    private List<? extends AbstractIMarketplaceReports> monthlyMarketStatistics;
+    //private List<? extends AbstractIMarketplaceReports> monthlyAmazonStatistics;
     private List<BestLister> monthlyBestLister;
 
     public ReporterDTO() {
@@ -34,36 +34,20 @@ public class ReporterDTO {
         this.bestLister = bestLister;
     }
 
-    public AbstractIMarketplaceReports getTotalEbayStatistics() {
-        return totalEbayStatistics;
+    public List<? extends AbstractIMarketplaceReports> getTotalMarketplaceStatistics() {
+        return totalMarketplaceStatistics;
     }
 
-    public void setTotalEbayStatistics(AbstractIMarketplaceReports totalEbayStatistics) {
-        this.totalEbayStatistics = totalEbayStatistics;
+    public void setTotalMarketplaceStatistics(List<? extends AbstractIMarketplaceReports> totalMarketplaceStatistics) {
+        this.totalMarketplaceStatistics = totalMarketplaceStatistics;
     }
 
-    public AbstractIMarketplaceReports getTotalAmazonStatistics() {
-        return totalAmazonStatistics;
+    public List<? extends AbstractIMarketplaceReports> getMonthlyMarketStatistics() {
+        return monthlyMarketStatistics;
     }
 
-    public void setTotalAmazonStatistics(AbstractIMarketplaceReports totalAmazonStatistics) {
-        this.totalAmazonStatistics = totalAmazonStatistics;
-    }
-
-    public List<? extends AbstractIMarketplaceReports> getMonthlyEbayStatistics() {
-        return monthlyEbayStatistics;
-    }
-
-    public void setMonthlyEbayStatistics(List<? extends AbstractIMarketplaceReports> monthlyEbayStatistics) {
-        this.monthlyEbayStatistics = monthlyEbayStatistics;
-    }
-
-    public List<? extends AbstractIMarketplaceReports> getMonthlyAmazonStatistics() {
-        return monthlyAmazonStatistics;
-    }
-
-    public void setMonthlyAmazonStatistics(List<? extends AbstractIMarketplaceReports> monthlyAmazonStatistics) {
-        this.monthlyAmazonStatistics = monthlyAmazonStatistics;
+    public void setMonthlyMarketStatistics(List<? extends AbstractIMarketplaceReports> monthlyMarketStatistics) {
+        this.monthlyMarketStatistics = monthlyMarketStatistics;
     }
 
     public List<BestLister> getMonthlyBestLister() {

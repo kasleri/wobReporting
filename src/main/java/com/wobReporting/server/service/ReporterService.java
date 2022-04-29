@@ -2,15 +2,16 @@ package com.wobReporting.server.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.wobReporting.client.ftp.FtpClient;
 import com.wobReporting.config.PropertiesLoader;
 import com.wobReporting.server.model.Listing;
+import com.wobReporting.server.model.Marketplace;
 import com.wobReporting.server.repository.helper.reporter.AbstractIMarketplaceReports;
 import com.wobReporting.server.repository.helper.reporter.Data.BestLister;
 import com.wobReporting.server.repository.helper.reporter.Data.IBaseStatistics;
 import com.wobReporting.server.repository.helper.reporter.Data.MonthlyIBaseStatistics;
 import com.wobReporting.server.repository.helper.reporter.Data.ReporterDTO;
-import com.wobReporting.server.repository.helper.reporter.MonthlyMarketplaceReports;
-import com.wobReporting.server.repository.helper.reporter.TotalMarketplaceReports;
+import com.wobReporting.server.repository.helper.reporter.MarketplaceReports;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class ReporterService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final File reportFile = new File(PropertiesLoader.getProperty("report.json.file-name"));
+    private List<Marketplace> marketplaces;
 
     public ReporterService() {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
@@ -50,6 +52,7 @@ public class ReporterService {
 
     public void reportAll() {
         try {
+
             generateTotalStatistics();
             generateMonthlyStatistics();
 
@@ -62,18 +65,20 @@ public class ReporterService {
     public void generateTotalStatistics() {
         generateTotalListingCount();
         generateTotalBestLister();
+        marketplaces = marketplaceService.findAll();
         List<IBaseStatistics> allGroupedResult = listingService.getTotalStatistics();
-        reporterDTO.setTotalEbayStatistics(generateTotalMarketplaceStatistics(allGroupedResult, "EBAY"));
-        reporterDTO.setTotalAmazonStatistics(generateTotalMarketplaceStatistics(allGroupedResult, "AMAZON"));
+        reporterDTO.setTotalMarketplaceStatistics(marketplaces.stream()
+                .map(x -> generateTotalMarketplaceStatistics(allGroupedResult, x.getMarketplace_name()))
+                .collect(Collectors.toList())
+        );
     }
 
-    private AbstractIMarketplaceReports generateTotalMarketplaceStatistics(List<IBaseStatistics> allGroupedResult, String marketplaceName) {
-        return new TotalMarketplaceReports(
+    private MarketplaceReports generateTotalMarketplaceStatistics(List<IBaseStatistics> allGroupedResult, String marketplaceName) {
+        return new MarketplaceReports(
                 allGroupedResult.stream()
                         .filter(x -> x.getMarketplaceName().equals(marketplaceName))
                         .collect(Collectors.toList()));
     }
-
 
     public void generateTotalListingCount() {
         List<Listing> allEntity = listingService.findAll();
@@ -88,8 +93,8 @@ public class ReporterService {
 
         generateMonthlyBestLister();
         List<MonthlyIBaseStatistics> monthlyGroupedResult = listingService.getMonthlyStatistics();
-        reporterDTO.setMonthlyAmazonStatistics(generateMonthlyMarketplaceStatistics(monthlyGroupedResult, "AMAZON"));
-        reporterDTO.setMonthlyEbayStatistics(generateMonthlyMarketplaceStatistics(monthlyGroupedResult, "EBAY"));
+        marketplaces = marketplaceService.findAll();
+        marketplaces.forEach(x -> reporterDTO.setMonthlyMarketStatistics(generateMonthlyMarketplaceStatistics(monthlyGroupedResult, x.getMarketplace_name())));
     }
 
     private List<? extends AbstractIMarketplaceReports> generateMonthlyMarketplaceStatistics(List<MonthlyIBaseStatistics> monthlyGroupedResult, String marketplaceName) {
@@ -106,7 +111,7 @@ public class ReporterService {
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new));
 
         return sortedStatsPerMonth.entrySet().stream()
-                .map(x -> new MonthlyMarketplaceReports(x.getValue(), x.getKey()))
+                .map(x -> new MarketplaceReports(x.getValue(), x.getKey()))
                 .collect(Collectors.toList());
 
     }
@@ -118,7 +123,18 @@ public class ReporterService {
                         .collect(Collectors.toList()));
     }
 
-    private void writeToJsonFile(ReporterDTO objectToWrite) throws IOException {
+    public void writeToJsonFile(ReporterDTO objectToWrite) throws IOException {
         objectMapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(reportFile), objectToWrite);
+    }
+
+    public void uploadReportFileToFtp() throws IOException {
+        FtpClient ftpClient = new FtpClient(PropertiesLoader.getProperty("ftp.client.server"),
+                Integer.parseInt(PropertiesLoader.getProperty("ftp.client.port")),
+                PropertiesLoader.getProperty("ftp.client.user"),
+                PropertiesLoader.getProperty("ftp.client.password"));
+        ftpClient.open();
+        File file = new File(PropertiesLoader.getProperty("report.json.file-name"));
+
+        ftpClient.putFileToPath(file, "report.json");
     }
 }

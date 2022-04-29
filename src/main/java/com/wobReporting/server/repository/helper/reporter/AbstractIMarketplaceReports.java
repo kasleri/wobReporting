@@ -7,7 +7,7 @@ import com.wobReporting.server.repository.helper.reporter.Data.ListingPrice;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@JsonDeserialize(as = MonthlyMarketplaceReports.class)
+@JsonDeserialize(as = MarketplaceReports.class)
 public abstract class AbstractIMarketplaceReports implements IMarketplaceReport {
     protected String marketplaceName;
     protected double totalListingCount;
