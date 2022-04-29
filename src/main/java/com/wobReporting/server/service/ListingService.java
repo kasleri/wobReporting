@@ -3,7 +3,6 @@ package com.wobReporting.server.service;
 import com.wobReporting.server.csv.WriteCSVLog;
 import com.wobReporting.server.model.Listing;
 import com.wobReporting.server.repository.ListingRepository;
-import com.wobReporting.server.repository.helper.predicatesCollection.SearchCriteria;
 import com.wobReporting.server.repository.helper.reporter.Data.IBaseStatistics;
 import com.wobReporting.server.repository.helper.reporter.Data.IBestLister;
 import com.wobReporting.server.repository.helper.reporter.Data.MonthlyIBaseStatistics;
@@ -57,10 +56,6 @@ public class ListingService {
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-    }
-
-    public List<Listing> findByPredicates(List<SearchCriteria> params) {
-        return listingRepository.findByPredicates(params);
     }
 
     public String getTotalBestLister() {

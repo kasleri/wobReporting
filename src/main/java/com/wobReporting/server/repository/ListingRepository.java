@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ListingRepository extends JpaRepository<Listing, Long>, ListingRepositoryCustom {
+public interface ListingRepository extends JpaRepository<Listing, Long> {
     @Query(value = "SELECT mode() within group (order by owner_email_address) FROM listings",
             nativeQuery = true)
     String getTotalBestLister();
