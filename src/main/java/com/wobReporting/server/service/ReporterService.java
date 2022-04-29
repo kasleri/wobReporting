@@ -3,7 +3,6 @@ package com.wobReporting.server.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.wobReporting.client.ftp.FtpClient;
-import com.wobReporting.config.PropertiesLoader;
 import com.wobReporting.server.model.Listing;
 import com.wobReporting.server.model.Marketplace;
 import com.wobReporting.server.repository.helper.reporter.AbstractIMarketplaceReports;
@@ -13,6 +12,7 @@ import com.wobReporting.server.repository.helper.reporter.Data.MonthlyIBaseStati
 import com.wobReporting.server.repository.helper.reporter.Data.ReporterDTO;
 import com.wobReporting.server.repository.helper.reporter.MarketplaceReports;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -35,10 +35,18 @@ public class ReporterService {
     private MarketplaceService marketplaceService;
     @Autowired
     private ReporterDTO reporterDTO;
-
+    @Value("${ftp.client.server}")
+    private String ftpServer;
+    @Value("${ftp.client.port}")
+    private String ftpServerPort;
+    @Value("${ftp.client.user}")
+    private String ftpUser;
+    @Value("${ftp.client.password}")
+    private String ftpPassword;
+    @Value("${report.json.file-name}")
+    private String jsonFile;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final File reportFile = new File(PropertiesLoader.getProperty("report.json.file-name"));
     private List<Marketplace> marketplaces;
 
     public ReporterService() {
@@ -124,16 +132,16 @@ public class ReporterService {
     }
 
     public void writeToJsonFile(ReporterDTO objectToWrite) throws IOException {
-        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(reportFile), objectToWrite);
+        objectMapper.writerWithDefaultPrettyPrinter().writeValue(new FileOutputStream(jsonFile), objectToWrite);
     }
 
     public void uploadReportFileToFtp() throws IOException {
-        FtpClient ftpClient = new FtpClient(PropertiesLoader.getProperty("ftp.client.server"),
-                Integer.parseInt(PropertiesLoader.getProperty("ftp.client.port")),
-                PropertiesLoader.getProperty("ftp.client.user"),
-                PropertiesLoader.getProperty("ftp.client.password"));
+        FtpClient ftpClient = new FtpClient(ftpServer,
+                Integer.parseInt(ftpServerPort),
+                ftpUser,
+                ftpPassword);
         ftpClient.open();
-        File file = new File(PropertiesLoader.getProperty("report.json.file-name"));
+        File file = new File(jsonFile);
 
         ftpClient.putFileToPath(file, "report.json");
     }

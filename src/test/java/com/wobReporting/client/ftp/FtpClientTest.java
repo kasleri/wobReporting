@@ -10,6 +10,7 @@ import org.mockftpserver.fake.filesystem.FileEntry;
 import org.mockftpserver.fake.filesystem.FileSystem;
 import org.mockftpserver.fake.filesystem.UnixFakeFileSystem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -25,7 +26,8 @@ class FtpClientTest {
 
     @Autowired
     private FtpClient ftpClient;
-
+    @Value("${report.json.file-name}")
+    private String jsonFile;
     private FakeFtpServer fakeFtpServer;
 
     @BeforeEach
@@ -73,7 +75,8 @@ class FtpClientTest {
 
     @Test
     public void uploadFileTest() throws IOException {
-        File file = new File(PropertiesLoader.getProperty("report.json.file-name"));
+
+        File file = new File(jsonFile);
 
         ftpClient.putFileToPath(file, "report.json");
 

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -20,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class ReporterServiceTest {
     @Autowired
     private ReporterService reporterService;
+    @Value("${report.json.file-name}")
+    private String jsonFile;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
@@ -30,7 +33,7 @@ class ReporterServiceTest {
     void reportAllTest() throws IOException {
         reporterService.reportAll();
         ReporterDTO expectedRepostDTO = reporterService.getReporterDTO();
-        ReporterDTO reportDto = objectMapper.readValue(new File(PropertiesLoader.getProperty("report.json.file-name")), ReporterDTO.class);
+        ReporterDTO reportDto = objectMapper.readValue(new File(jsonFile), ReporterDTO.class);
         assertEquals(reportDto.getClass(), ReporterDTO.class);
         assertThat(reportDto)
                 .isEqualToComparingFieldByFieldRecursively(expectedRepostDTO);
@@ -43,7 +46,7 @@ class ReporterServiceTest {
         reporterService.generateTotalStatistics();
         ReporterDTO expectedRepostDTO = reporterService.getReporterDTO();
         reporterService.writeToJsonFile(expectedRepostDTO);
-        ReporterDTO reportDto = objectMapper.readValue(new File(PropertiesLoader.getProperty("report.json.file-name")), ReporterDTO.class);
+        ReporterDTO reportDto = objectMapper.readValue(new File(jsonFile), ReporterDTO.class);
         assertEquals(reportDto.getClass(), ReporterDTO.class);
         assertThat(reportDto)
                 .isEqualToComparingFieldByFieldRecursively(expectedRepostDTO);
@@ -56,7 +59,7 @@ class ReporterServiceTest {
         reporterService.generateMonthlyStatistics();
         ReporterDTO expectedRepostDTO = reporterService.getReporterDTO();
         reporterService.writeToJsonFile(expectedRepostDTO);
-        ReporterDTO reportDto = objectMapper.readValue(new File(PropertiesLoader.getProperty("report.json.file-name")), ReporterDTO.class);
+        ReporterDTO reportDto = objectMapper.readValue(new File(jsonFile), ReporterDTO.class);
         assertEquals(reportDto.getClass(), ReporterDTO.class);
         assertThat(reportDto)
                 .isEqualToComparingFieldByFieldRecursively(expectedRepostDTO);

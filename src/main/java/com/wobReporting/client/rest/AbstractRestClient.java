@@ -1,6 +1,7 @@
 package com.wobReporting.client.rest;
 
-import com.wobReporting.config.PropertiesLoader;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -9,17 +10,19 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
+@Component
 public abstract class AbstractRestClient<T> {
-
-    static final String REST_URI = PropertiesLoader.getProperty("rest.uri");
-    static final String KEY = PropertiesLoader.getProperty("rest.key");
+    @Value("${rest.uri}")
+    private String restUri;
+    @Value("${rest.key}")
+    private String key;
     final Client client = ClientBuilder.newClient();
 
     public List<T> getJson() {
         return this.client
-                .target(REST_URI)
+                .target(restUri)
                 .path(getPath())
-                .queryParam("key", KEY)
+                .queryParam("key", key)
                 .request(MediaType.APPLICATION_JSON)
                 .get(Response.class)
                 .readEntity(getEntityType());

@@ -1,6 +1,6 @@
 package com.wobReporting.server.service;
 
-import com.wobReporting.server.CSV.WriteCSVLog;
+import com.wobReporting.server.csv.WriteCSVLog;
 import com.wobReporting.server.model.Listing;
 import com.wobReporting.server.repository.ListingRepository;
 import com.wobReporting.server.repository.helper.predicatesCollection.SearchCriteria;
@@ -25,6 +25,8 @@ public class ListingService {
     private MarketplaceService marketplaceService;
     @Autowired
     private Validator validator;
+    @Autowired
+    private WriteCSVLog csvWriter;
 
     public void saveAll(List<Listing> listings) {
         List<String[]> errorLines = new ArrayList<>();
@@ -49,8 +51,8 @@ public class ListingService {
 
     private void writeErrorsToCSV(List<String[]> errorLines) {
         try {
-            WriteCSVLog logCSV = new WriteCSVLog(errorLines);
-            logCSV.printCSV();
+            csvWriter.setErrorLines(errorLines);
+            csvWriter.printCSV();
 
         } catch (IOException ex) {
             System.out.println(ex.getMessage());

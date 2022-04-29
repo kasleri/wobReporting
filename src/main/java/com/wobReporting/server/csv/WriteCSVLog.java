@@ -1,6 +1,7 @@
-package com.wobReporting.server.CSV;
+package com.wobReporting.server.csv;
 
-import com.wobReporting.config.PropertiesLoader;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,22 +10,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Component
 public class WriteCSVLog {
 
-    private final List<String[]> errorLines;
+    @Value("${log.import-log.file-name}")
+    private String importLogFileName;
 
-    public WriteCSVLog(List<String[]> errorLines) {
+    private List<String[]> errorLines;
+
+    public WriteCSVLog() {
+    }
+
+
+    public void setErrorLines(List<String[]> errorLines) {
         this.errorLines = errorLines;
     }
 
-    public String convertToCSV(String[] data) {
+    private String convertToCSV(String[] data) {
         return Stream.of(data)
                 .map(this::escapeSpecialCharacters)
                 .collect(Collectors.joining(","));
     }
 
     public void printCSV() throws IOException {
-        File csvOutputFile = new File(PropertiesLoader.getProperty("log.import-log.file-name"));
+        File csvOutputFile = new File(importLogFileName);
         try (PrintWriter pw = new PrintWriter(csvOutputFile)) {
             errorLines.stream()
                     .map(this::convertToCSV)
