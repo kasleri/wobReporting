@@ -11,13 +11,17 @@ import java.util.UUID;
 public class Location {
     @Id
     private UUID id;
-    private String manager_name;
+    @Column(name = "manager_name")
+    private String managerName;
     private String phone;
-    private String address_primary;
-    private String address_secondary;
+    @Column(name = "address_primary")
+    private String addressPrimary;
+    @Column(name = "address_secondary")
+    private String addressSecondary;
     private String country;
     private String town;
-    private String postal_code;
+    @Column(name = "postal_code")
+    private String postalCode;
 
     @Transient
     @OneToMany(mappedBy = "locations", cascade = CascadeType.ALL)
@@ -26,15 +30,15 @@ public class Location {
     public Location() {
     }
 
-    public Location(UUID id, String manager_name, String phone, String address_primary, String address_secondary, String country, String town, String postal_code) {
+    public Location(UUID id, String managerName, String phone, String addressPrimary, String addressSecondary, String country, String town, String postalCode) {
         this.id = id;
-        this.manager_name = manager_name;
+        this.managerName = managerName;
         this.phone = phone;
-        this.address_primary = address_primary;
-        this.address_secondary = address_secondary;
+        this.addressPrimary = addressPrimary;
+        this.addressSecondary = addressSecondary;
         this.country = country;
         this.town = town;
-        this.postal_code = postal_code;
+        this.postalCode = postalCode;
     }
 
     public UUID getId() {
@@ -45,12 +49,12 @@ public class Location {
         this.id = id;
     }
 
-    public String getManager_name() {
-        return manager_name;
+    public String getManagerName() {
+        return managerName;
     }
 
-    public void setManager_name(String manager_name) {
-        this.manager_name = manager_name;
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
     }
 
     public String getPhone() {
@@ -61,20 +65,20 @@ public class Location {
         this.phone = phone;
     }
 
-    public String getAddress_primary() {
-        return address_primary;
+    public String getAddressPrimary() {
+        return addressPrimary;
     }
 
-    public void setAddress_primary(String address_primary) {
-        this.address_primary = address_primary;
+    public void setAddressPrimary(String addressPrimary) {
+        this.addressPrimary = addressPrimary;
     }
 
-    public String getAddress_secondary() {
-        return address_secondary;
+    public String getAddressSecondary() {
+        return addressSecondary;
     }
 
-    public void setAddress_secondary(String address_secondary) {
-        this.address_secondary = address_secondary;
+    public void setAddressSecondary(String addressSecondary) {
+        this.addressSecondary = addressSecondary;
     }
 
     public String getCountry() {
@@ -93,11 +97,11 @@ public class Location {
         this.town = town;
     }
 
-    public String getPostal_code() {
-        return postal_code;
+    public String getPostalCode() {
+        return postalCode;
     }
 
-    public void setPostal_code(String postal_code) {
-        this.postal_code = postal_code;
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
     }
 }

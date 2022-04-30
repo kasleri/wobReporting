@@ -1,5 +1,9 @@
 package com.wobReporting.client.rest;
 
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.wobReporting.server.deserializer.ListingStatusDeserializer;
+import com.wobReporting.server.deserializer.ObjectMapperResolver;
 import com.wobReporting.server.model.ListingStatus;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +18,13 @@ public class ListingStatusRestClient extends AbstractRestClient<ListingStatus> {
     @Override
     protected String getPath() {
         return PATH;
+    }
+
+    @Override
+    protected ObjectMapperResolver getCustomDeserializer() {
+        SimpleModule module = new SimpleModule("ListingStatusDeserializer", new Version(1, 0, 0, null, null, null));
+        module.addDeserializer(ListingStatus.class, new ListingStatusDeserializer());
+        return new ObjectMapperResolver(module);
     }
 
     @Override

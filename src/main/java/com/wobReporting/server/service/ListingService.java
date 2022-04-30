@@ -37,7 +37,7 @@ public class ListingService {
                 violations.forEach(v ->
                         errorLines.add(new String[]
                                 {String.valueOf(listing.getId()),
-                                        String.valueOf(marketplaceService.findById(listing.getMarketplace().longValue()).get().getMarketplace_name()),
+                                        String.valueOf(marketplaceService.findById(listing.getMarketplace().longValue()).get().getMarketplaceName()),
                                         String.valueOf(v.getPropertyPath())
                                 }));
             }

@@ -1,5 +1,6 @@
 package com.wobReporting.client.rest;
 
+import com.wobReporting.server.deserializer.ObjectMapperResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +17,11 @@ public abstract class AbstractRestClient<T> {
     private String restUri;
     @Value("${rest.key}")
     private String key;
-    final Client client = ClientBuilder.newClient();
+    final Client client = ClientBuilder.newClient().register(getCustomDeserializer());
 
     public List<T> getJson() {
         return this.client
+
                 .target(restUri)
                 .path(getPath())
                 .queryParam("key", key)
@@ -29,6 +31,8 @@ public abstract class AbstractRestClient<T> {
     }
 
     protected abstract String getPath();
+
+    protected abstract ObjectMapperResolver getCustomDeserializer();
 
     protected abstract <E> GenericType<List<E>> getEntityType();
 }

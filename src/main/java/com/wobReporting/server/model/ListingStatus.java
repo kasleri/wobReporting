@@ -1,8 +1,10 @@
 package com.wobReporting.server.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Set;
 
 @XmlRootElement
 @Entity
@@ -10,18 +12,15 @@ import java.util.Set;
 public class ListingStatus {
     @Id
     private Integer id;
-    private String status_name;
-
-    @Transient
-    @OneToMany(mappedBy = "listing_status", cascade = CascadeType.ALL)
-    private Set<Listing> listings;
+    @Column(name = "status_name")
+    private String statusName;
 
     public ListingStatus() {
     }
 
-    public ListingStatus(Integer id, String status_name) {
+    public ListingStatus(Integer id, String statusName) {
         this.id = id;
-        this.status_name = status_name;
+        this.statusName = statusName;
     }
 
     public Integer getId() {
@@ -32,11 +31,11 @@ public class ListingStatus {
         this.id = id;
     }
 
-    public String getStatus_name() {
-        return status_name;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setStatus_name(String status_name) {
-        this.status_name = status_name;
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }

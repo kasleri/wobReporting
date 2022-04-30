@@ -1,5 +1,6 @@
 package com.wobReporting.server.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,14 +12,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Marketplace {
     @Id
     private Long id;
-    private String marketplace_name;
+    @Column(name = "marketplace_name")
+    private String marketplaceName;
 
     public Marketplace() {
     }
 
-    public Marketplace(Long id, String marketplace_name) {
+    public Marketplace(Long id, String marketplaceName) {
         this.id = id;
-        this.marketplace_name = marketplace_name;
+        this.marketplaceName = marketplaceName;
     }
 
     public Long getId() {
@@ -29,11 +31,11 @@ public class Marketplace {
         this.id = id;
     }
 
-    public String getMarketplace_name() {
-        return marketplace_name;
+    public String getMarketplaceName() {
+        return marketplaceName;
     }
 
-    public void setMarketplace_name(String marketplace_name) {
-        this.marketplace_name = marketplace_name;
+    public void setMarketplaceName(String marketplaceName) {
+        this.marketplaceName = marketplaceName;
     }
 }

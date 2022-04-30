@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface MarketplaceRepository extends JpaRepository<Marketplace, Long> {
-    @Query("SELECT m FROM Marketplace m WHERE m.marketplace_name = ?1")
+    @Query("SELECT m FROM Marketplace m WHERE m.marketplaceName = ?1")
     Optional<Marketplace> findByMarketplaceName(String name);
 }

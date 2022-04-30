@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class LocationDeserializer extends StdDeserializer<Location> {
-    final Location location = new Location();
+
 
     public LocationDeserializer() {
         this(null);
@@ -23,7 +23,7 @@ public class LocationDeserializer extends StdDeserializer<Location> {
 
     @Override
     public Location deserialize(JsonParser parser, DeserializationContext deserializer) throws IOException {
-
+        Location location = new Location();
         final ObjectCodec codec = parser.getCodec();
         final JsonNode node = codec.readTree(parser);
 

@@ -76,7 +76,7 @@ public class ReporterService {
         marketplaces = marketplaceService.findAll();
         List<IBaseStatistics> allGroupedResult = listingService.getTotalStatistics();
         reporterDTO.setTotalMarketplaceStatistics(marketplaces.stream()
-                .map(x -> generateTotalMarketplaceStatistics(allGroupedResult, x.getMarketplace_name()))
+                .map(x -> generateTotalMarketplaceStatistics(allGroupedResult, x.getMarketplaceName()))
                 .collect(Collectors.toList())
         );
     }
@@ -102,7 +102,7 @@ public class ReporterService {
         generateMonthlyBestLister();
         List<MonthlyIBaseStatistics> monthlyGroupedResult = listingService.getMonthlyStatistics();
         marketplaces = marketplaceService.findAll();
-        marketplaces.forEach(x -> reporterDTO.setMonthlyMarketStatistics(generateMonthlyMarketplaceStatistics(monthlyGroupedResult, x.getMarketplace_name())));
+        marketplaces.forEach(x -> reporterDTO.setMonthlyMarketStatistics(generateMonthlyMarketplaceStatistics(monthlyGroupedResult, x.getMarketplaceName())));
     }
 
     private List<? extends AbstractIMarketplaceReports> generateMonthlyMarketplaceStatistics(List<MonthlyIBaseStatistics> monthlyGroupedResult, String marketplaceName) {

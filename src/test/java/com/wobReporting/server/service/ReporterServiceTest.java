@@ -1,9 +1,7 @@
 package com.wobReporting.server.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wobReporting.config.PropertiesLoader;
 import com.wobReporting.server.repository.helper.reporter.Data.ReporterDTO;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,8 @@ import java.io.File;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @ActiveProfiles("test")
 @SpringBootTest
 class ReporterServiceTest {
@@ -26,7 +25,7 @@ class ReporterServiceTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
     }
 
     @Test

@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class ListingDeserializer extends StdDeserializer<Listing> {
-    final Listing listing = new Listing();
+
 
     public ListingDeserializer() {
         this(null);
@@ -25,6 +25,8 @@ public class ListingDeserializer extends StdDeserializer<Listing> {
 
     @Override
     public Listing deserialize(JsonParser parser, DeserializationContext deserializer) throws IOException {
+
+        Listing listing = new Listing();
 
         final ObjectCodec codec = parser.getCodec();
         final JsonNode node = codec.readTree(parser);
@@ -42,12 +44,11 @@ public class ListingDeserializer extends StdDeserializer<Listing> {
             listing.setListingPrice(listingListingPrice.floatValue());
 
             final String listingCurrency = node.get("currency").asText();
-            listing.setCurrency(listingCurrency);
+            listing.setCurrency(node.get("currency").asText());
 
             final Integer listingQuantity = node.get("quantity").asInt();
-            listing.setQuantity(listingQuantity);
+            listing.setQuantity(node.get("quantity").asInt());
 
-            listing.setListingStatus(node.get("listing_status").asInt());
             listing.setMarketplace(node.get("marketplace").asInt());
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yyyy");
